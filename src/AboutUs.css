@@ -1,0 +1,136 @@
+/* General Page Styles */
+.about-page {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    padding: 0;
+    margin: 0;
+}
+
+/* Header Section */
+.about-header {
+    background-color: #ffffff; /* Dark blue background */
+    color: #063979;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.about-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.about-header p {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+/* Project Overview Section */
+.project-overview {
+    display: flex; /* Use Flexbox */
+    align-items: flex-start; /* Align items at the top */
+    justify-content: flex-start; /* Place image and text side by side */
+    gap: 20px; /* Add spacing between image and text */
+    margin: 40px auto; /* Center the section horizontally */
+    max-width: 1000px; /* Restrict the section width */
+    padding: 20px; /* Add padding for better spacing */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    border-radius: 10px; /* Round the edges */
+    background-color: #ffffff; /* Add a light background color */
+}
+
+/* Image Container */
+.image-container {
+    flex: 0 0 250px; /* Fix the width of the image container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overview-image {
+    max-width: 100%; /* Ensure the image fits within its container */
+    max-height: 20%;
+    height: auto; /* Maintain the image's aspect ratio */
+    border-radius: 10px; /* Add rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+/* Text Content */
+.text-content {
+    flex: 1; /* Allow text to occupy the remaining space */
+    font-size: 1.1rem; /* Adjust font size */
+    color: #333; /* Text color */
+    text-align: justify; /* Justify the text for neat alignment */
+}
+
+.text-content p {
+    margin-bottom: 15px; /* Add spacing between paragraphs */
+}
+
+.text-content strong {
+    font-weight: bold; /* Highlight important text */
+}
+
+
+/* Team Section */
+.team-section {
+    padding: 40px 20px;
+    background-color: #f5f5f5; /* Light gray background */
+    text-align: center;
+}
+
+.team-section h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #063979; /* Match the header */
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.team-member {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Updated: Square image display */
+.member-image {
+    width: 100px; /* Fixed width for square */
+    height: 100px; /* Fixed height for square */
+    object-fit: cover; /* Ensure the image fills the box without distortion */
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.team-member h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: #063979;
+}
+
+.team-member p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.linkedin-icon {
+    width: 24px;
+    height: 24px;
+    margin-top: 10px;
+    transition: opacity 0.3s ease;
+}
+
+.linkedin-icon:hover {
+    opacity: 0.7;
+}

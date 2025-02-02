@@ -1,0 +1,48 @@
+/* Ensure full-page layout with footer at the bottom */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Full viewport height */
+  margin: 0; /* Remove extra spacing */
+}
+
+main {
+  flex: 1; /* Ensures content takes available space and pushes footer down */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically centers the content */
+  align-items: center; /* Horizontally centers the content */
+}
+
+/* Existing footer styles remain intact */
+.footer {
+  background-color: #222;
+  color: #fff;
+  padding: 10px 0;
+  text-align: center;
+}
+
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-links {
+  margin-bottom: 0px;
+}
+
+.footer-link {
+  color: #00aaff;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
+.footer-text {
+  font-size: 14px;
+}

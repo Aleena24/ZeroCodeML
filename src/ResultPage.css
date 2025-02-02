@@ -1,0 +1,257 @@
+/* General styles for Result Page */
+.result-page {
+  text-align: center;
+  background-image: url('D:\OneDrive\Aleena\Christ_UNI_ academics\ZeroCodeML\public\img\bg3.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding: 10px;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  margin: 0;
+  align-items: center;
+}
+
+/* Headline and Subheadline styles */
+.headline,
+.subheadline {
+  margin: 50px;
+  padding: 0;
+}
+
+.headline {
+  font-size: 5rem;
+}
+
+.subheadline {
+  font-size: 1.2rem;
+}
+
+/* Results container styles */
+.results-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between the result boxes */
+  margin: 0;
+  padding: 0;
+  margin-bottom: 40px; /* Add space below the result boxes */
+}
+
+.result-item {
+  background-color: #1e293b;
+  padding: 20px;
+  border-radius: 10px;
+  width: 200px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  margin: 0;
+}
+
+/* Result item heading and paragraph styles */
+.result-item h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.result-item p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #3b82f6;
+  margin: 10px;
+}
+
+/* Visualization button styles */
+.visualization-button-container {
+  text-align: center;
+  margin: 0; /* Remove default margin */
+  margin-top: 20px; /* Space between result boxes and the button */
+}
+
+.visualization-button {
+  background-color: #3b82f6;
+  color: #ffffff;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.visualization-button:hover {
+  background-color: #2563eb;
+}
+
+.visualization-button:active {
+  transform: scale(0.95);
+}
+
+/* ChatGPT logo button styling */
+.chatgpt-logo-button {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  border-radius: 20%;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  top: 20px; /* Position it at the top */
+  left: 20px; /* Position it to the left */
+}
+
+.chatgpt-logo-button:hover {
+  transform: scale(1.1);
+}
+
+.chatgpt-logo-button:active {
+  transform: scale(0.95);
+}
+
+/* Modal styling */
+.chatgpt-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+  width: 300px;
+  text-align: center;
+}
+
+.chatgpt-modal h2 {
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+
+.chatgpt-modal p {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.modal-close-btn {
+  background-color: #3b82f6;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal-close-btn:hover {
+  background-color: #2563eb;
+}
+
+.modal-close-btn:active {
+  transform: scale(0.95);
+}
+
+
+/* Swipe Button Container */
+.swipe-button-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Swipe Button Styles */
+.swipe-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #1f2937; /* Dark background */
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.swipe-button:hover {
+  background-color: #000000;
+  transform: translateY(-3px);
+}
+
+.swipe-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Arrow Styles */
+.arrow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.arrow {
+  width: 20px;
+  height: 20px;
+  border: solid #ffffff;
+  border-width: 2px 2px 0 0;
+  transform: rotate(45deg);
+  animation: arrow-move 1.2s infinite;
+}
+
+@keyframes arrow-move {
+  0% {
+    transform: translateX(0) rotate(45deg);
+  }
+  50% {
+    transform: translateX(5px) rotate(45deg);
+  }
+  100% {
+    transform: translateX(0) rotate(45deg);
+  }
+}
+
+/* Home icon styles */
+.home-icon {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #1f2937; /* Dark background for the icon */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.home-icon:hover {
+  transform: scale(1.1); /* Slight scale-up on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+.home-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: #00d4ff; /* Neon blue fill for the icon */
+  transition: fill 0.3s;
+}
+
+.home-icon:hover svg {
+  fill: #fdd835; /* Change fill color to yellow on hover */
+}
+
+
+
+

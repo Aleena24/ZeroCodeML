@@ -1,0 +1,107 @@
+/* General styles for the homepage */
+.homepage {
+    font-family: "Gill Sans", sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Full-height feature section */
+.feature-section {
+  height: 100vh; /* Full height of the screen */
+  width: 100%; /* Full width */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Video styling */
+.background-video {
+  position: absolute;
+  opacity: 0.4;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Content overlay for text */
+.content-overlay {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for text readability */
+  padding: 30px;
+  border-radius: 10px;
+  width: 800px;
+  height: auto;
+}
+
+/* Feature titles */
+.feature-title {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* Feature descriptions */
+.feature-description {
+  font-size: 1.5rem;
+  color: #ffffff;
+  max-width: 1000px;
+  line-height: 1.5;
+}
+
+/* Floating Button */
+.floating-button {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #062955, #1e3c72); /* Default gradient background */
+  color: white;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  transition: background 0.3s ease, transform 0.3s ease; /* Add transition for smooth hover effect */
+}
+
+.floating-button:hover {
+  background: linear-gradient(90deg, #4b6cb7, #182848); /* Gradient changes on hover */
+  transform: translateX(-50%) scale(1.05); /* Slightly enlarge on hover */
+}
+
+.floating-button:active {
+  transform: translateX(-50%) scale(0.95); /* Slight shrink effect on click */
+}
+
+
+/* About Us Icon Button */
+.top-right-link {
+  position: fixed;
+  top: 15px; /* Adjust distance from the top */
+  right: 20px; /* Adjust distance from the right */
+  z-index: 10; /* Ensure it stays above other elements */
+}
+
+.about-us-icon {
+  width: 70px; /* Size of the icon */
+  height: 70px;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.about-us-icon:hover {
+  transform: scale(1.1); /* Slightly enlarge on hover */
+  opacity: 0.8; /* Slightly fade on hover */
+}
+
