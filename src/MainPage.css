@@ -1,331 +1,67 @@
-/* General styles */
-body {
+/* Ensure the page takes full height */
+html, body {
+  height: 100%;
   margin: 0;
-  font-family: Gill Sans, sans-serif;
-  background-color: #0f172a;
-  color: #ffffff;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
 }
 
-.homepage-main {
-  padding: 0px; /* Adjust padding for spacing from the top */
+/* Main container */
+.mainpage-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start; /* Align content to the top */
-  min-height: 100vh;
+  height: 100vh;
+  background: url("D:\OneDrive\Documents\GitHub\ZeroCodeML\public\img\bg1.png") no-repeat center center fixed;
   background-size: cover;
-  background-position: center;
-}
-
-/* Progress bar styles */
-.progress-bar {
-  width: 80%;
-  height: 10px;
-  background-color: #b7acac;
-  border-radius: 5px;
-  overflow: hidden;
-  margin: 20px 0;
-}
-
-.progress {
-  height: 100%;
-  background-color: #090829;
-  transition: width 0.2s ease;
-}
-
-/* Uploaded file name and message */
-.uploaded-filename {
-  font-size: 1.1rem;
-  margin: 10px 0;
-}
-
-.uploaded-message {
-  font-size: 1.3rem;
-  font-style: italic;
-  color: #f3f3f3;
-  margin-bottom: 30px;
-}
-
-/* Button styling */
-.cta {
-  display: flex;
-  gap: 20px; /* Add space between buttons */
-  margin-top: 20px; /* Space between headline and buttons */
-}
-
-/* Candy ghost button with mixed neon (blue and yellow) */
-.btn-secondary {
-  background: transparent;
-  border: 2px solid;
-  border-image-source: linear-gradient(90deg, #00d4ff, #0714a5); /* Blue to yellow gradient */
-  border-image-slice: 1; /* Ensures the gradient is applied to the border */
-  color: #000000; /* Initial text color (blue) */
-  padding: 12px 30px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 5px;
-  text-transform: uppercase;
   position: relative;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 212, 255, 0.6), 0 0 15px #0714a5; /* Blue and yellow neon glow */
 }
 
-.btn-secondary:hover {
-  background: linear-gradient(90deg, #0d5e6e, #0714a5); /* Gradient background on hover */
-  color: #ffffff; /* Dark text for contrast */
-  box-shadow: 0 0 20px #ffffff, 0 0 20px #ffffff; /* Intense neon glow */
-  transform: translateY(-5px); /* Slight lift on hover */
-}
-
-.btn-secondary:active {
-  transform: scale(0.95); /* Slight scale effect on click */
-}
-
-/* Tooltip styles for buttons */
-[data-tooltip]:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.75);
-  color: white;
-  padding: 8px;
-  border-radius: 0;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  bottom: 100%; /* Position above the button */
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-[data-tooltip]:hover::after {
-  opacity: 1; /* Make the tooltip visible when hovered */
-}
-
-
-/* Swipe Button Styles */
-.swipe-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 30px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #ffffff;
-  background-color: #1f2937; /* Dark background */
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.swipe-button:hover {
-  background-color: #000000;
-  transform: translateY(-3px);
-}
-
-.swipe-button:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* Arrow Styles */
-.arrow-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-}
-
-.arrow {
-  width: 20px;
-  height: 20px;
-  border: solid #ffffff;
-  border-width: 2px 2px 0 0;
-  transform: rotate(45deg);
-  animation: arrow-move 1.2s infinite;
-}
-
-@keyframes arrow-move {
-  0% {
-    transform: translateX(0) rotate(45deg);
-  }
-  50% {
-    transform: translateX(5px) rotate(45deg);
-  }
-  100% {
-    transform: translateX(0) rotate(45deg);
-  }
-}
-
-
-/* Message box styles */
-.message-box {
-  width: 80%;
-  max-width: 600px;
-  background-color: #1e293b;
-  border-radius: 10px;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
-  padding: 20px;
+/* Form Card */
+.form-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  width: 350px;
   text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Upload Button */
+.upload-section {
   margin-top: 20px;
-  animation: fadeSlideUp 0.8s ease-out forwards; /* New animation */
-  opacity: 0; /* Initial state for animation */
-  transform: translateY(20px); /* Start slightly below */
 }
 
-@keyframes fadeSlideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px); /* Start slightly below */
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0); /* Move to its final position */
-  }
-}
-
-.message-box h1 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  color: #75a6e3; /* Success green */
-}
-
-.message-box p {
-  font-size: 1.2rem;
-  color: #cbd5e1;
-  margin: 5px 0;
-}
-
-.message-box strong {
-  color: #f8f8f8; /* Highlighted yellow */
-}
-
-/* Tooltip styles for the button */
-[data-tooltip]:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.75);
+.upload-button {
+  background: linear-gradient(to right, #007bff, #0056b3);
   color: white;
-  padding: 8px;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  bottom: 100%; /* Position above the button */
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-[data-tooltip]:hover::after {
-  opacity: 1; /* Make the tooltip visible when hovered */
-}
-
-/* Error message box */
-.error-message {
-  background-color: #0f0f0f;
-  color: #b83f3f;
-  padding: 15px;
-  border-radius: 5px;
-  font-size: 1.1rem;
-  margin-top: 20px;
-  text-align: center;
-}
-
-.error-message p {
-  margin: 0;
-  font-weight: bold;
-}
-
-/* Home icon styles */
-.home-icon {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #1f2937; /* Dark background for the icon */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.home-icon:hover {
-  transform: scale(1.1); /* Slight scale-up on hover */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-}
-
-.home-icon svg {
-  width: 24px;
-  height: 24px;
-  fill: #00d4ff; /* Neon blue fill for the icon */
-  transition: fill 0.3s;
-}
-
-.home-icon:hover svg {
-  fill: #0714a5; /* Change fill color to yellow on hover */
-}
-
-/* Updated button styles */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 30px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #020202;
-  background: linear-gradient(90deg, #ffffff, #2196f3); /* Gradient background */
   border: none;
-  border-radius: 50px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
+  transition: 0.3s ease;
 }
 
-.btn-primary:hover {
-  background: linear-gradient(90deg, #ffffff, #1976d2); /* Darkened gradient on hover */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-  transform: scale(1.05); /* Slight zoom on hover */
+.upload-button:hover {
+  background: linear-gradient(to right, #0056b3, #003f7f);
 }
 
-.btn-primary:active {
-  transform: scale(0.98); /* Slight compression on click */
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+/* Error Message */
+.error-text {
+  color: red;
+  margin-top: 10px;
 }
 
-.btn-primary::before {
-  content: '';
+/* Footer Styling */
+.footer {
   position: absolute;
-  top: 0;
-  left: -75%;
-  width: 50%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-  transform: skewX(-45deg);
-  transition: left 0.5s ease;
+  bottom: 0;
+  width: 100%;
+  background: black;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
 }
-
-.btn-primary:hover::before {
-  left: 125%; /* Slide the highlight effect across the button */
-}
-
-/* Optional: Adding an icon inside the button */
-.btn-primary .icon {
-  margin-right: 10px;
-  font-size: 1.2rem;
-}
-
-
-
