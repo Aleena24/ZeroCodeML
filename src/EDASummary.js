@@ -12,16 +12,39 @@ const EdaSummary = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Fetch EDA Summary
     axios.get("http://localhost:5000/eda-summary")
+      .then((response) => setEdaSummary(response.data.summary))
+      .catch(() => setErrorMessage("Error fetching EDA Summary. Please try again."));
+
+    // Fetch Descriptive Statistics
+    axios.get("http://localhost:5000/descriptive-stats")
       .then((response) => {
-        setEdaSummary(response.data.summary);
-        setDescriptiveStats(response.data.descriptive_stats);
-        setNumericalPlot(response.data.numerical_distribution);
-        setCorrelationPlot(response.data.correlation_plot);
+        if (response.data.descriptive_stats) {
+          setDescriptiveStats(response.data.descriptive_stats);
+        } else {
+          setErrorMessage(response.data.error || "Error fetching Descriptive Statistics.");
+        }
       })
-      .catch(() => {
-        setErrorMessage("Error fetching EDA Summary. Please try again.");
-      });
+      .catch(() => setErrorMessage("Error fetching Descriptive Statistics."));
+
+    // Fetch Numerical Distribution
+    axios.get("http://localhost:5000/numerical-distribution")
+      .then((response) => {
+        if (response.data.numerical_distribution) {
+          setNumericalPlot(response.data.numerical_distribution);
+        }
+      })
+      .catch(() => setErrorMessage("Error fetching Numerical Distribution."));
+
+    // Fetch Correlation Heatmap
+    axios.get("http://localhost:5000/correlation-heatmap")
+      .then((response) => {
+        if (response.data.correlation_plot) {
+          setCorrelationPlot(response.data.correlation_plot);
+        }
+      })
+      .catch(() => setErrorMessage("Error fetching Correlation Heatmap."));
   }, []);
 
   return (
@@ -60,7 +83,7 @@ const EdaSummary = () => {
 
       <div className="button-container">
         <button className="back-button" onClick={() => navigate("/main")}>
-          Back to Home
+          Back
         </button>
         <button className="next-button" onClick={() => navigate("/algorithm")}>
           Next

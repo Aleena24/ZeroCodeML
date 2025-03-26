@@ -42,6 +42,8 @@ def dfSummary(data):
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    global eda_data  # Ensure global access
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded'}), 400
 
@@ -50,13 +52,19 @@ def upload_file():
         return jsonify({'error': 'Invalid file type'}), 400
 
     filename = secure_filename(file.filename)
-    file_path = f"{UPLOAD_FOLDER}/{filename}"
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
     file.save(file_path)
 
     try:
         df = pd.read_csv(file_path) if filename.endswith('.csv') else pd.read_excel(file_path)
-        global eda_data
-        eda_data = df  # Store uploaded dataset globally for EDA endpoints
+        
+        # Check if the file loaded correctly
+        print("File Loaded Successfully! First 5 rows:")
+        print(df.head())
+
+        # Ensure dataset is properly assigned
+        eda_data = df.copy()
+        
         return jsonify({
             'filename': filename,
             'shape': df.shape,
@@ -65,34 +73,88 @@ def upload_file():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
+
 @app.route('/eda-summary', methods=['GET'])
 def get_eda_summary():
+    global eda_data
     if eda_data is None:
         return jsonify({'error': 'No dataset uploaded'}), 400
-    return jsonify({'summary': dfSummary(eda_data)})
+    
+    try:
+        summary = eda_data.describe(include='all').to_dict()
+        return jsonify({'summary': summary}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500  # Returns error details
+
 
 @app.route('/descriptive-stats', methods=['GET'])
 def get_descriptive_stats():
-    if eda_data is None:
-        return jsonify({'error': 'No dataset uploaded'}), 400
-    return jsonify({'descriptive_stats': eda_data.describe(include='all').to_dict()})
+    global eda_data  
+
+    if eda_data is None or eda_data.empty:
+        return jsonify({'error': 'No dataset uploaded or dataset is empty'}), 400
+
+    # Ensure numerical columns exist
+    num_cols = eda_data.select_dtypes(include=[np.number]).columns.tolist()
+    if not num_cols:
+        return jsonify({'error': 'No numerical columns found in dataset'}), 400
+
+    stats = eda_data[num_cols].describe().to_dict()
+    return jsonify({'descriptive_stats': stats})
+
+
 
 @app.route('/correlation-heatmap', methods=['GET'])
 def get_correlation_heatmap():
-    if eda_data is None:
+    global eda_data  
+
+    if eda_data is None or eda_data.empty:
         return jsonify({'error': 'No dataset uploaded'}), 400
-    corr = eda_data.corr()
-    fig, ax = plt.subplots(figsize=(10, 8))
-    sns.heatmap(corr, annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
-    return jsonify({'heatmap': plot_to_base64(fig)})
+
+    try:
+        numeric_data = eda_data.select_dtypes(include=[np.number])
+        if numeric_data.shape[1] < 2:
+            return jsonify({'error': 'Not enough numerical columns for correlation heatmap'}), 400
+
+        corr = numeric_data.corr()  
+        fig, ax = plt.subplots(figsize=(10, 8))
+        sns.heatmap(corr, annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
+
+        return jsonify({'correlation_plot': plot_to_base64(fig)})  # Updated key name
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 
 @app.route('/numerical-distribution', methods=['GET'])
 def get_numerical_distribution():
-    if eda_data is None:
+    global eda_data  
+
+    if eda_data is None or eda_data.empty:
         return jsonify({'error': 'No dataset uploaded'}), 400
-    fig, ax = plt.subplots(figsize=(10, 6))
-    eda_data.hist(ax=ax, bins=20, edgecolor='black')
-    return jsonify({'distribution_plot': plot_to_base64(fig)})
+
+    try:
+        num_cols = eda_data.select_dtypes(include=[np.number]).columns.tolist()
+        if not num_cols:
+            return jsonify({'error': 'No numerical columns available'}), 400
+        
+        fig, axes = plt.subplots(nrows=len(num_cols), figsize=(10, 6 * len(num_cols)))
+        
+        if len(num_cols) == 1:
+            eda_data[num_cols[0]].hist(ax=axes, bins=20, edgecolor='black', grid=False)
+            axes.set_title(num_cols[0])
+        else:
+            for i, col in enumerate(num_cols):
+                eda_data[col].hist(ax=axes[i], bins=20, edgecolor='black', grid=False)
+                axes[i].set_title(col)
+
+        return jsonify({'numerical_distribution': plot_to_base64(fig)})  # Updated key name
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
