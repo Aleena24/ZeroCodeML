@@ -63,49 +63,47 @@ const MainPage = () => {
   return (
     <div className="mainpage-container">
       <main className="mainpage-content">
-        {view === "main" && (
-          <div className="form-card">
-            <h1 className="form-title">Build and Evaluate ML Algorithm Automatically</h1>
-            <p className="form-subtitle">Upload Your Data</p>
+        <div className="form-card">
+          {view === "main" && (
+            <>
+              <h1 className="form-title">Automate ML Model Building and Evaluation</h1>
+              <p className="form-subtitle">Upload Your Dataset to Get Started</p>
 
-            <div className="upload-section">
-              <label className="upload-button">
-                Text / Numerical
-                <input
-                  type="file"
-                  accept=".csv, .xlsx, .xls"
-                  style={{ display: "none" }}
-                  onChange={handleFileUpload}
-                />
-              </label>
-            </div>
+              <div className="upload-section">
+                <label className="upload-button">
+                  Select File (.csv, .xlsx, .xls)
+                  <input
+                    type="file"
+                    accept=".csv, .xlsx, .xls"
+                    style={{ display: "none" }}
+                    onChange={handleFileUpload}
+                  />
+                </label>
+              </div>
 
-            {errorMessage && <p className="error-text">{errorMessage}</p>}
-          </div>
-        )}
+              {errorMessage && <p className="error-text">{errorMessage}</p>}
+            </>
+          )}
 
-        {view === "fileUploading" && (
-          <div className="upload-status">
-            <h1>File Uploading...</h1>
-            <div className="progress-bar">
-              <div className="progress" style={{ width: `${uploadProgress}%` }}></div>
-            </div>
-          </div>
-        )}
+          {view === "fileUploading" && (
+            <>
+              <h1>Uploading Your File...</h1>
+              <div className="progress-bar">
+                <div className="progress" style={{ width: `${uploadProgress}%` }}></div>
+              </div>
+            </>
+          )}
 
-        {view === "fileUploaded" && (
-          <div className="upload-status">
-            <h1>File Uploaded Successfully</h1>
-            <p><strong>File Name:</strong> {fileName}</p>
-
-
-
-        <button onClick={() => navigate("/eda-summary")} className="btn btn-primary">
-          View EDA Summary
-        </button>
-
-          </div>
-        )}
+          {view === "fileUploaded" && (
+            <>
+              <h1 className="success-message">Upload Successful!</h1>
+              <p className="file-name">File Name: {fileName}</p>
+              <button onClick={() => navigate("/eda-summary")} className="eda-button">
+                Proceed to EDA Summary
+              </button>
+            </>
+          )}
+        </div>
       </main>
 
       <Footer />
