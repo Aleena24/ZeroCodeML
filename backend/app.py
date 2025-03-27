@@ -8,11 +8,13 @@ from io import BytesIO
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
-from pandas import MultiIndex, Int64Index
+
 
 # Flask app initialization
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"]}})
+
+eda_data = pd.DataFrame()
 
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {'csv', 'xlsx'}
@@ -42,52 +44,40 @@ def dfSummary(data):
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    global eda_data  # Ensure global access
+    global eda_data  # Make it accessible throughout the app
+    file = request.files.get("file")
 
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file uploaded'}), 400
-
-    file = request.files['file']
-    if file.filename == '' or not allowed_file(file.filename):
-        return jsonify({'error': 'Invalid file type'}), 400
-
-    filename = secure_filename(file.filename)
-    file_path = os.path.join(UPLOAD_FOLDER, filename)
-    file.save(file_path)
+    if not file:
+        return jsonify({"error": "No file provided"}), 400  # Bad Request
 
     try:
-        df = pd.read_csv(file_path) if filename.endswith('.csv') else pd.read_excel(file_path)
-        
-        # Check if the file loaded correctly
-        print("File Loaded Successfully! First 5 rows:")
-        print(df.head())
+        # Read the CSV file
+        eda_data = pd.read_csv(file)
 
-        # Ensure dataset is properly assigned
-        eda_data = df.copy()
-        
-        return jsonify({
-            'filename': filename,
-            'shape': df.shape,
-            'columns': df.columns.tolist()
-        })
+        return jsonify({"message": "File uploaded successfully", "columns": list(eda_data.columns)})
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
+        return jsonify({"error": str(e)}), 500  # Internal Server Error
+    
 
 
 @app.route('/eda-summary', methods=['GET'])
 def get_eda_summary():
-    global eda_data
-    if eda_data is None or eda_data.empty:
-        return jsonify({'error': 'No dataset uploaded'}), 400
-    
+    global eda_data  # Ensure we access the global variable
+
+    # Check if data is uploaded
+    if eda_data.empty:
+        return jsonify({'error': 'No dataset uploaded'}), 400  
+
     try:
         num_summary = eda_data.describe().to_dict()
-        cat_summary = eda_data.describe(include=['O']).to_dict()  # 'O' means object (categorical)
-        
-        return jsonify({'numerical_summary': num_summary, 'categorical_summary': cat_summary})
+
+        # Check if categorical data exists
+        cat_summary = eda_data.describe(include=['O']).to_dict() if not eda_data.select_dtypes(include=['O']).empty else {}
+
+        return jsonify({'summary': {'numerical_summary': num_summary, 'categorical_summary': cat_summary}})
+    
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': str(e)}), 500  
 
 
 

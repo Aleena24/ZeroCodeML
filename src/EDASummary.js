@@ -16,7 +16,8 @@ const EdaSummary = () => {
     axios.get("http://localhost:5000/eda-summary")
       .then((response) => {
         console.log("EDA Summary Response:", response.data);  // Debugging
-        setEdaSummary(response.data.summary || "No data available");
+        setEdaSummary(response.data.summary ? response.data.summary : "No data available");
+
       })
       .catch((error) => {
         console.error("Error fetching EDA Summary:", error);
