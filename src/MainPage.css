@@ -23,6 +23,7 @@ html, body {
   background: white;
   border-radius: 12px;
   padding: 30px;
+  align-items: center;
   width: 350px;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -107,5 +108,5 @@ html, body {
 }
 
 .eda-button:hover {
-  background: linear-gradient(to right, #007bff, #0056b3);
+  background: linear-gradient(to right, #218838, #19692c);
 }
