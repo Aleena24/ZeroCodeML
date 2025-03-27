@@ -78,14 +78,17 @@ def upload_file():
 @app.route('/eda-summary', methods=['GET'])
 def get_eda_summary():
     global eda_data
-    if eda_data is None:
+    if eda_data is None or eda_data.empty:
         return jsonify({'error': 'No dataset uploaded'}), 400
     
     try:
-        summary = eda_data.describe(include='all').to_dict()
-        return jsonify({'summary': summary}), 200
+        num_summary = eda_data.describe().to_dict()
+        cat_summary = eda_data.describe(include=['O']).to_dict()  # 'O' means object (categorical)
+        
+        return jsonify({'numerical_summary': num_summary, 'categorical_summary': cat_summary})
     except Exception as e:
-        return jsonify({'error': str(e)}), 500  # Returns error details
+        return jsonify({'error': str(e)}), 500
+
 
 
 @app.route('/descriptive-stats', methods=['GET'])
