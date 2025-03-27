@@ -13,3 +13,4 @@ zipp==3.11.0
 joblib==1.1.1
 matplotlib==3.7.1
 Seaborn==0.12.2
+react-icons
