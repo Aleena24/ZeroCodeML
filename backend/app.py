@@ -60,25 +60,19 @@ def upload_file():
     
 
 
-@app.route('/eda-summary', methods=['GET'])
-def get_eda_summary():
-    global eda_data  # Ensure we access the global variable
-
-    # Check if data is uploaded
-    if eda_data.empty:
-        return jsonify({'error': 'No dataset uploaded'}), 400  
-
-    try:
-        num_summary = eda_data.describe().to_dict()
-
-        # Check if categorical data exists
-        cat_summary = eda_data.describe(include=['O']).to_dict() if not eda_data.select_dtypes(include=['O']).empty else {}
-
-        return jsonify({'summary': {'numerical_summary': num_summary, 'categorical_summary': cat_summary}})
-    
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500  
-
+@app.route("/eda-summary", methods=["GET"])
+def eda_summary():
+    df = pd.read_csv("your_dataset.csv")  # Load dataset
+    summary = {
+        col: {
+            "missing": int(df[col].isnull().sum()),
+            "non_null": int(df[col].count()),
+            "unique": int(df[col].nunique()),
+            "data_type": str(df[col].dtype),
+        }
+        for col in df.columns
+    }
+    return jsonify({"summary": summary})
 
 
 @app.route('/descriptive-stats', methods=['GET'])

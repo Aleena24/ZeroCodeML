@@ -56,23 +56,29 @@ const EdaSummary = () => {
       ) : (
         <div className="selected-section">
           <button className="back-button" onClick={() => setSelectedOption(null)}>Back</button>
-          <h2>{selectedOption}</h2>
-          {selectedOption === "EDA Summary" && (
+          {selectedOption === "EDA Summary" && edaSummary && (
             <div className="flip-card-grid">
-              {Object.entries(edaSummary || {}).map(([col, details]) => (
+              {Object.entries(edaSummary).map(([col, details]) => (
                 <div key={col} className="flip-card">
                   <div className="flip-card-inner">
                     <div className="flip-card-front">
                       <p>{col}</p>
                     </div>
                     <div className="flip-card-back">
-                      <pre>{JSON.stringify(details, null, 2)}</pre>
+                      <pre>
+                        Missing: {details.missing} {"\n"}
+                        Non-null: {details.non_null} {"\n"}
+                        Unique: {details.unique} {"\n"}
+                        Data Type: {details.data_type}
+                      </pre>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           )}
+
+
           {selectedOption === "Descriptive Statistics" && (
             <div className="flip-card-grid">
               {Object.entries(descriptiveStats || {}).map(([col, details]) => (
