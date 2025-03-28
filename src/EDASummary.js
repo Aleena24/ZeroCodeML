@@ -9,91 +9,94 @@ const EdaSummary = () => {
   const [numericalPlot, setNumericalPlot] = useState("");
   const [correlationPlot, setCorrelationPlot] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [expandedCard, setExpandedCard] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("http://localhost:5000/eda-summary")
       .then((response) => {
-        console.log("EDA Summary Response:", response.data);  // Debugging
-        setEdaSummary(response.data.summary ? response.data.summary : "No data available");
-
+        setEdaSummary(response.data.summary || "No data available");
       })
-      .catch((error) => {
-        console.error("Error fetching EDA Summary:", error);
-        setErrorMessage("Error fetching EDA Summary.");
-      });
-  
+      .catch(() => setErrorMessage("Error fetching EDA Summary."));
+
     axios.get("http://localhost:5000/descriptive-stats")
       .then((response) => {
-        console.log("Descriptive Stats Response:", response.data);
         setDescriptiveStats(response.data.descriptive_stats || "No data available");
       })
-      .catch((error) => {
-        console.error("Error fetching Descriptive Stats:", error);
-        setErrorMessage("Error fetching Descriptive Statistics.");
-      });
-  
+      .catch(() => setErrorMessage("Error fetching Descriptive Statistics."));
+
     axios.get("http://localhost:5000/numerical-distribution")
       .then((response) => {
-        console.log("Numerical Distribution Response:", response.data);
         setNumericalPlot(response.data.numerical_distribution || "");
       })
-      .catch((error) => {
-        console.error("Error fetching Numerical Distribution:", error);
-        setErrorMessage("Error fetching Numerical Distribution.");
-      });
-  
+      .catch(() => setErrorMessage("Error fetching Numerical Distribution."));
+
     axios.get("http://localhost:5000/correlation-heatmap")
       .then((response) => {
-        console.log("Correlation Heatmap Response:", response.data);
         setCorrelationPlot(response.data.correlation_plot || "");
       })
-      .catch((error) => {
-        console.error("Error fetching Correlation Heatmap:", error);
-        setErrorMessage("Error fetching Correlation Heatmap.");
-      });
+      .catch(() => setErrorMessage("Error fetching Correlation Heatmap."));
   }, []);
-  
-
-  const toggleExpand = (cardName) => {
-    setExpandedCard(expandedCard === cardName ? null : cardName);
-  };
 
   return (
     <div className="eda-container">
       <h1>Exploratory Data Analysis (EDA) Report</h1>
-
       {errorMessage && <p className="error-text">{errorMessage}</p>}
-
-      <div className="card-grid">
-        {[
-          { key: "eda", title: "EDA Summary", description: "A brief overview of dataset structure.", content: edaSummary },
-          { key: "stats", title: "Descriptive Statistics", description: "Statistical summary of dataset variables.", content: descriptiveStats },
-          { key: "num", title: "Numerical Distribution", description: "Graphical representation of numeric data.", content: numericalPlot, isImage: true },
-          { key: "corr", title: "Correlation Heatmap", description: "Correlation analysis of dataset features.", content: correlationPlot, isImage: true }
-        ].map(({ key, title, description, content, isImage }) => (
-          <div key={key} className={`card ${expandedCard === key ? "expanded" : ""}`} onClick={() => toggleExpand(key)}>
-            <div className="card-content">
-              <h2>{title}</h2>
-              {expandedCard === key ? (
-                isImage ? (
-                  <img src={`data:image/png;base64,${content}`} alt={title} className="eda-image" />
-                ) : (
-                  <pre className="eda-json">{JSON.stringify(content, null, 2)}</pre>
-                )
-              ) : (
-                <p className="card-description">{description}</p>
-              )}
+      
+      {!selectedOption ? (
+        <div className="card-grid">
+          {["EDA Summary", "Descriptive Statistics", "Numerical Distribution", "Correlation Heatmap"].map((option) => (
+            <div key={option} className="card" onClick={() => setSelectedOption(option)}>
+              <div className="card-content">
+                <h2>{option}</h2>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="button-container">
-        <button className="back-button" onClick={() => navigate("/main")}>Back</button>
-        <button className="next-button" onClick={() => navigate("/algorithm")}>Next</button>
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="selected-section">
+          <button className="back-button" onClick={() => setSelectedOption(null)}>Back</button>
+          <h2>{selectedOption}</h2>
+          {selectedOption === "EDA Summary" && (
+            <div className="flip-card-grid">
+              {Object.entries(edaSummary || {}).map(([col, details]) => (
+                <div key={col} className="flip-card">
+                  <div className="flip-card-inner">
+                    <div className="flip-card-front">
+                      <p>{col}</p>
+                    </div>
+                    <div className="flip-card-back">
+                      <pre>{JSON.stringify(details, null, 2)}</pre>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {selectedOption === "Descriptive Statistics" && (
+            <div className="flip-card-grid">
+              {Object.entries(descriptiveStats || {}).map(([col, details]) => (
+                <div key={col} className="flip-card">
+                  <div className="flip-card-inner">
+                    <div className="flip-card-front">
+                      <p>{col}</p>
+                    </div>
+                    <div className="flip-card-back">
+                      <pre>{JSON.stringify(details, null, 2)}</pre>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {selectedOption === "Numerical Distribution" && numericalPlot && (
+            <img src={`data:image/png;base64,${numericalPlot}`} alt="Numerical Distribution" className="eda-image-large" />
+          )}
+          {selectedOption === "Correlation Heatmap" && correlationPlot && (
+            <img src={`data:image/png;base64,${correlationPlot}`} alt="Correlation Heatmap" className="eda-image-large" />
+          )}
+        </div>
+      )}
     </div>
   );
 };
