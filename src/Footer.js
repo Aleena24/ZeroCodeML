@@ -6,13 +6,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
-        
-        {/* Navigation Links */}
-        <div className="footer-links">
-          <a href="/" className="footer-link">Home</a>
-          <a href="/main" className="footer-link">Upload</a>
-          <a href="/about" className="footer-link">About</a>
-        </div>
+      
 
         {/* Social Media Icons */}
         <div className="social-icons">
@@ -34,6 +28,11 @@ const Footer = () => {
         <p className="footer-text">
           ZeroCodeML © 2025 | All Rights Reserved.
         </p>
+
+        <p className="footer-class">
+          Batch of MSc AIML 
+        </p>
+
       </div>
     </footer>
   );
