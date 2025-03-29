@@ -1,0 +1,88 @@
+/* Navbar Styling */
+.navbar {
+    background: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Navbar Container */
+.navbar-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    justify-content: space-between;
+}
+
+/* Logo & Website Name */
+.navbar-logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 40px;
+    margin-right: 10px;
+    margin-left: -150px;
+}
+
+.website-name {
+    font-size: 28px;
+    font-weight: bold;
+    color: #000;
+}
+
+/* Centering the Navbar Menu */
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 30px;
+    margin-left: 150px;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+/* Navigation Links */
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    color: #007bff;
+}
+
+/* Right Side: Get Started Button */
+.navbar-button-container {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+}
+
+.get-started-button {
+    background: linear-gradient(to right, #007bff, #0056b3);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-left: 50px;
+    margin-right: -80px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+.get-started-button:hover {
+    background: linear-gradient(to right, #0056b3, #003f7f);
+}

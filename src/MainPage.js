@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Footer from "./Footer";
+import Navbar from "./Navbar";
 import "./MainPage.css"; // Ensure the background is handled in CSS
 
 const MainPage = () => {
@@ -55,6 +56,7 @@ const MainPage = () => {
 
   return (
     <div className="zerocodeml-container">
+      <Navbar />
       <main className="zerocodeml-content">
         <div className="zerocodeml-form-card">
           {view === "main" && (
