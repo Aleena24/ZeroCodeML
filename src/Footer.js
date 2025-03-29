@@ -19,7 +19,7 @@ const Footer = () => {
           <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-link">
             <FaTwitter />
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-link">
+          <a href="https://www.linkedin.com/in/christ-university-computer-science-958aaa299/" target="_blank" rel="noopener noreferrer" className="social-link">
             <FaLinkedin />
           </a>
         </div>
