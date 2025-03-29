@@ -22,7 +22,7 @@ const EdaSummary = () => {
 
       try {
         const statsResponse = await axios.get("http://localhost:5000/descriptive-stats");
-        setDescriptiveStats(statsResponse.data.descriptive_stats || "No data available");
+        setDescriptiveStats(statsResponse.data.descriptive_stats || null);
       } catch {
         setErrorMessage("Error fetching Descriptive Statistics.");
       }
@@ -85,22 +85,32 @@ const EdaSummary = () => {
             </div>
           )}
 
-          {selectedOption === "Descriptive Statistics" && (
+          {selectedOption === "Descriptive Statistics" && descriptiveStats && (
             <div className="flip-card-grid">
-              {Object.entries(descriptiveStats || {}).map(([col, details]) => (
+              {Object.entries(descriptiveStats).map(([col, details]) => (
                 <div key={col} className="flip-card">
                   <div className="flip-card-inner">
                     <div className="flip-card-front">
                       <p>{col}</p>
                     </div>
                     <div className="flip-card-back">
-                      <pre>{JSON.stringify(details, null, 2)}</pre>
+                      <pre>
+                        Count: {details.count} {"\n"}
+                        Mean: {details.mean.toFixed(2)} {"\n"}
+                        Std Dev: {details.std.toFixed(2)} {"\n"}
+                        Min: {details.min} {"\n"}
+                        25%: {details["25%"]} {"\n"}
+                        50% (Median): {details["50%"]} {"\n"}
+                        75%: {details["75%"]} {"\n"}
+                        Max: {details.max}
+                      </pre>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           )}
+
           {selectedOption === "Numerical Distribution" && numericalPlot && (
             <img src={`data:image/png;base64,${numericalPlot}`} alt="Numerical Distribution" className="eda-image-large" />
           )}
