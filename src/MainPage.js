@@ -2,20 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Footer from "./Footer";
-import "./MainPage.css";
+import "./MainPage.css"; // Ensure the background is handled in CSS
 
 const MainPage = () => {
   const [view, setView] = useState("main");
   const [fileName, setFileName] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
-  const [file, setFile] = useState(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const backgroundImageUrl = "./img/bg1.png";
-    document.querySelector(".mainpage-container").style.backgroundImage = `url(${backgroundImageUrl})`;
-  }, []);
+  const navigate = useNavigate(); // Removed unused 'file' state
 
   const handleFileUpload = (event) => {
     const uploadedFile = event.target.files[0];
@@ -25,10 +19,9 @@ const MainPage = () => {
 
       if (allowedTypes.includes(fileType)) {
         setFileName(uploadedFile.name);
-        setFile(uploadedFile);
         setView("fileUploading");
-        
-        localStorage.setItem("uploadedFile", uploadedFile);
+
+        localStorage.setItem("uploadedFile", uploadedFile.name); // Fixed: Store only file name
         uploadFileToBackend(uploadedFile);
       } else {
         setErrorMessage("Please upload a valid file type: .csv, .xlsx, or .xls");
@@ -61,16 +54,16 @@ const MainPage = () => {
   };
 
   return (
-    <div className="mainpage-container">
-      <main className="mainpage-content">
-        <div className="form-card">
+    <div className="zerocodeml-container">
+      <main className="zerocodeml-content">
+        <div className="zerocodeml-form-card">
           {view === "main" && (
             <>
-              <h1 className="form-title">Automate ML Model Building and Evaluation</h1>
-              <p className="form-subtitle">Upload Your Dataset to Get Started</p>
+              <h1 className="zerocodeml-form-title">Streamlined ML Workflow</h1>
+              <p className="zerocodeml-form-subtitle">Upload Your File to Get Started</p>
 
-              <div className="upload-section">
-                <label className="upload-button">
+              <div className="zerocodeml-upload-section">
+                <label className="zerocodeml-upload-button">
                   Select File (.csv, .xlsx, .xls)
                   <input
                     type="file"
@@ -81,24 +74,24 @@ const MainPage = () => {
                 </label>
               </div>
 
-              {errorMessage && <p className="error-text">{errorMessage}</p>}
+              {errorMessage && <p className="zerocodeml-error-text">{errorMessage}</p>}
             </>
           )}
 
           {view === "fileUploading" && (
             <>
               <h1>Uploading Your File...</h1>
-              <div className="progress-bar">
-                <div className="progress" style={{ width: `${uploadProgress}%` }}></div>
+              <div className="zerocodeml-progress-bar">
+                <div className="zerocodeml-progress" style={{ width: `${uploadProgress}%` }}></div>
               </div>
             </>
           )}
 
           {view === "fileUploaded" && (
             <>
-              <h1 className="success-message">Upload Successful!</h1>
-              <p className="file-name">File Name: {fileName}</p>
-              <button onClick={() => navigate("/eda-summary")} className="eda-button">
+              <h1 className="zerocodeml-success-message">Upload Successful!</h1>
+              <p className="zerocodeml-file-name">File Name: {fileName}</p>
+              <button onClick={() => navigate("/eda-summary")} className="zerocodeml-eda-button">
                 Proceed to EDA Summary
               </button>
             </>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainPage from './MainPage';
 import ResultPage from './ResultPage';
 import AlgorithmPage from './AlgorithmPage';
 import HomePage from './Home';
 import AboutUs from './AboutUs';
 import EdaSummary from './EDASummary';
+import MainPage from './MainPage';
 
 const App = () => {
   return (

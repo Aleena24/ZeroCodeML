@@ -1,40 +1,59 @@
 /* Ensure the page takes full height */
 html, body {
-  height: 50px;
+  height: 100%;
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
 }
 
 /* Main container */
-.mainpage-container {
+.zerocodeml-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Full viewport height */
   background: url("D:\OneDrive\Documents\GitHub\ZeroCodeML\public\img\bg1.png") no-repeat center center fixed;
+  height: 100vh;
   background-size: cover;
   position: relative;
 }
 
+/* Centering Container */
+.zerocodeml-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
 /* Form Card */
-.form-card {
+.zerocodeml-form-card {
   background: white;
   border-radius: 12px;
+  padding: 80px;
+  margin-bottom: 50px;
+  margin-left: 480px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Title */
+.zerocodeml-form-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
   padding: 30px;
-  align-items: center;
-  width: 350px;
+  width: auto;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Upload Button */
-.upload-section {
+.zerocodeml-upload-section {
   margin-top: 20px;
 }
 
-.upload-button {
+.zerocodeml-upload-button {
   background: linear-gradient(to right, #007bff, #0056b3);
   color: white;
   border: none;
@@ -46,29 +65,18 @@ html, body {
   transition: 0.3s ease;
 }
 
-.upload-button:hover {
+.zerocodeml-upload-button:hover {
   background: linear-gradient(to right, #0056b3, #003f7f);
 }
 
 /* Error Message */
-.error-text {
+.zerocodeml-error-text {
   color: red;
   margin-top: 10px;
 }
 
-/* Footer Styling */
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background: black;
-  color: white;
-  text-align: center;
-  padding: 10px 0;
-}
-
 /* Success Message Card */
-.success-card {
+.zerocodeml-success-card {
   background: white;
   border-radius: 12px;
   padding: 30px;
@@ -79,7 +87,7 @@ html, body {
 }
 
 /* Styling for the Success Message */
-.success-message {
+.zerocodeml-success-message {
   font-size: 20px;
   font-weight: bold;
   color: #000;
@@ -87,7 +95,7 @@ html, body {
 }
 
 /* File Name Styling */
-.file-name {
+.zerocodeml-file-name {
   font-size: 16px;
   font-weight: bold;
   color: #333;
@@ -95,7 +103,7 @@ html, body {
 }
 
 /* EDA Summary Button */
-.eda-button {
+.zerocodeml-eda-button {
   background: linear-gradient(to right, #0056b3, #003f7f);
   color: white;
   border: none;
@@ -107,6 +115,6 @@ html, body {
   transition: 0.3s ease;
 }
 
-.eda-button:hover {
+.zerocodeml-eda-button:hover {
   background: linear-gradient(to right, #218838, #19692c);
 }
