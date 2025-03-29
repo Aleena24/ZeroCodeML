@@ -2,6 +2,7 @@
 import React from 'react';
 import './AboutUs.css';  // Make sure to have your CSS styles imported
 import Footer from "./Footer";
+import Navbar from "./Navbar";
 
 const AboutUs = () => {
   // Array of team members
@@ -70,6 +71,7 @@ const AboutUs = () => {
 
   return (
     <div className="about-page">
+      <Navbar/>
       {/* Header Section */}
       <section className="about-header">
         <h1>We are Team ZeROCodeML</h1>
@@ -89,26 +91,30 @@ const AboutUs = () => {
     />
   </div>
   <div className="text-content">
-    <p>
-      We are students of the M.Sc. in Artificial Intelligence and
-      Machine Learning program at Christ University, Bangalore. As part
-      of our final year project, we have developed <strong>ZeROCodeML</strong>, a
-      smart email classifier designed to enhance email security by
-      effectively detecting and filtering spam, phishing, and other
-      unwanted emails.
-    </p>
-    <p>
-      Our project is driven by a shared passion for leveraging AI and
-      machine learning to solve real-world problems. With the rise of
-      cyber threats and the increasing volume of unwanted emails, we
-      recognized the need for a solution that could help users maintain
-      a safer and more organized inbox.
-    </p>
-    <p>
-      Thank you for taking the time to learn about our project. We look
-      forward to contributing further to the field of Artificial
-      Intelligence and Machine Learning.
-    </p>
+  <p>We are a team of postgraduate students from the <b>M.Sc. Artificial Intelligence 
+    and Machine Learning program at CHRIST (Deemed to be University), Bangalore.</b> 
+    We proudly present <b>ZeroCodeML, an intuitive no-code machine learning (ML)</b> 
+    platform designed to streamline the ML workflow for users with little to 
+    no programming experience. Our platform enables users to seamlessly upload 
+    datasets, perform automated exploratory data analysis (EDA), preprocess data, 
+    and generate valuable insights, predictions, and visualizations with ease.
+  </p>
+  <p>Driven by a commitment to harnessing <b>advanced AI and machine learning techniques,</b>
+     we recognized the need for a powerful yet user-friendly solution to simplify 
+     complex ML processes. <b>ZeroCodeML</b> empowers users with an efficient and intuitive 
+     platform for end-to-end machine learning model development and data analysis, 
+     eliminating the technical barriers typically associated with ML implementation.
+</p>
+<p>This is <b>Version 1.0</b> of <b>ZeroCodeML</b>, and we are continuously working to enhance 
+  its capabilities. Future versions will introduce expanded functionalities, 
+  improved performance, and a more refined user experience. We are committed to 
+  evolving this platform into a comprehensive ML solution that caters to a wide 
+  range of users, from beginners to experienced professionals.</p>
+
+<p>We appreciate your support and interest in our project and remain dedicated 
+  to advancing the field of <b>Artificial Intelligence and Machine Learning</b> through  
+  <b> innovative research and development.</b> Stay tuned for upcoming updates and enhancements!
+</p>
   </div>
 </section>
 
