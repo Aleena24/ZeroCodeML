@@ -3,6 +3,7 @@ import axios from "axios";
 import "./EDASummary.css";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
+import { useNavigate } from "react-router-dom";
 
 const EdaSummary = () => {
   const [edaSummary, setEdaSummary] = useState(null);
@@ -11,6 +12,7 @@ const EdaSummary = () => {
   const [correlationPlot, setCorrelationPlot] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -122,6 +124,12 @@ const EdaSummary = () => {
           )}
         </div>
       )}
+
+            {/* Navigation Buttons */}
+            <div className="navigation-buttons">
+              <button className="nav-button" onClick={() => navigate("/main")}>Cancel</button>
+              <button className="nav-button" onClick={() => navigate("/algorithm")}>Proceed</button>
+            </div>
        <Footer />
     </div>
   );

@@ -159,3 +159,37 @@ h1 {
     width: 90%;
   }
 }
+
+/* Navigation Buttons */
+.navigation-buttons {
+  display: flex;
+  justify-content: center; /* Center align buttons */
+  gap: 20px; /* Add small space between buttons */
+  margin-top: 80px;
+}
+
+.nav-button {
+  background: #5f84ac;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.nav-button:hover {
+  background: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .navigation-buttons {
+    flex-direction: row; /* Keep buttons in a row */
+    flex-wrap: wrap;
+    gap: 10px; /* Reduce spacing between buttons */
+  }
+}
+
+
