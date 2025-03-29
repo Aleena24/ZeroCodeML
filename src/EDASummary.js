@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./EDASummary.css";
 
@@ -10,32 +9,40 @@ const EdaSummary = () => {
   const [correlationPlot, setCorrelationPlot] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:5000/eda-summary")
-      .then((response) => {
-        setEdaSummary(response.data.summary || "No data available");
-      })
-      .catch(() => setErrorMessage("Error fetching EDA Summary."));
+    const fetchData = async () => {
+      try {
+        const edaResponse = await axios.get("http://localhost:5000/eda-summary");
+        setEdaSummary(edaResponse.data.summary || null);
+      } catch (error) {
+        console.error("Error fetching EDA Summary:", error);
+        setErrorMessage("Error fetching EDA Summary. Please upload a valid dataset.");
+      }
 
-    axios.get("http://localhost:5000/descriptive-stats")
-      .then((response) => {
-        setDescriptiveStats(response.data.descriptive_stats || "No data available");
-      })
-      .catch(() => setErrorMessage("Error fetching Descriptive Statistics."));
+      try {
+        const statsResponse = await axios.get("http://localhost:5000/descriptive-stats");
+        setDescriptiveStats(statsResponse.data.descriptive_stats || "No data available");
+      } catch {
+        setErrorMessage("Error fetching Descriptive Statistics.");
+      }
 
-    axios.get("http://localhost:5000/numerical-distribution")
-      .then((response) => {
-        setNumericalPlot(response.data.numerical_distribution || "");
-      })
-      .catch(() => setErrorMessage("Error fetching Numerical Distribution."));
+      try {
+        const numericalResponse = await axios.get("http://localhost:5000/numerical-distribution");
+        setNumericalPlot(numericalResponse.data.numerical_distribution || "");
+      } catch {
+        setErrorMessage("Error fetching Numerical Distribution.");
+      }
 
-    axios.get("http://localhost:5000/correlation-heatmap")
-      .then((response) => {
-        setCorrelationPlot(response.data.correlation_plot || "");
-      })
-      .catch(() => setErrorMessage("Error fetching Correlation Heatmap."));
+      try {
+        const correlationResponse = await axios.get("http://localhost:5000/correlation-heatmap");
+        setCorrelationPlot(correlationResponse.data.correlation_plot || "");
+      } catch {
+        setErrorMessage("Error fetching Correlation Heatmap.");
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -77,7 +84,6 @@ const EdaSummary = () => {
               ))}
             </div>
           )}
-
 
           {selectedOption === "Descriptive Statistics" && (
             <div className="flip-card-grid">

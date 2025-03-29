@@ -62,15 +62,20 @@ def upload_file():
 
 @app.route("/eda-summary", methods=["GET"])
 def eda_summary():
-    df = pd.read_csv("your_dataset.csv")  # Load dataset
+    global eda_data  
+
+    if eda_data is None or eda_data.empty:
+        return jsonify({"error": "No dataset uploaded or dataset is empty"}), 400
+
     summary = {
         col: {
-            "missing": int(df[col].isnull().sum()),
-            "non_null": int(df[col].count()),
-            "unique": int(df[col].nunique()),
-            "data_type": str(df[col].dtype),
+            "dtype": str(eda_data[col].dtype),
+            "missing": int(eda_data[col].isnull().sum()),
+            "non_null": int(eda_data[col].count()),
+            "unique": int(eda_data[col].nunique()),
+            "data_type": str(eda_data[col].dtype),
         }
-        for col in df.columns
+        for col in eda_data.columns
     }
     return jsonify({"summary": summary})
 
