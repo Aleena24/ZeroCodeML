@@ -157,6 +157,15 @@
   text-align: center;
 }
 
+
+/* Button Container */
+.algo-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 /* Back Button */
 .algo-back-button {
   margin-top: 20px;
@@ -173,5 +182,24 @@
 
 .algo-back-button:hover {
   background: #c70039;
+  transform: scale(1.1);
+}
+
+/* Submit Button */
+.algo-submit-button {
+  margin-top: 20px;
+  background: #079927;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.algo-submit-button:hover {
+  background: #0d844d;
   transform: scale(1.1);
 }

@@ -3,9 +3,12 @@ import { motion } from "framer-motion"; // Make sure framer-motion is installed
 import "./AlgorithmPage.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { useNavigate } from "react-router-dom";
 
 const AlgorithmPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const navigate = useNavigate();
 
   const supervisedAlgorithms = {
     Regression: {
@@ -86,9 +89,16 @@ const AlgorithmPage = () => {
               </motion.div>
             ))}
           </div>
-          <button className="algo-back-button" onClick={handleBackToCategories}>
-            Back to Categories
-          </button>
+
+          <div className="algo-buttons">
+            <button className="algo-back-button" onClick={handleBackToCategories}>
+              Cancel
+            </button>
+            <button className="algo-submit-button" onClick={() => navigate("/results")}>
+              Submit
+            </button>
+          </div>
+
         </div>
       )}
       <Footer />
