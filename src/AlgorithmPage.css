@@ -1,236 +1,91 @@
 /* General page styles */
 .algorithm-page {
   text-align: center;
-  padding: 0;
-  background-image: url('D:\OneDrive\Aleena\Christ_UNI_ academics\ZeroCodeML\public\img\bg2.png'); /* Use a relative path */
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; /* Prevent zooming */
-  background-repeat: no-repeat; /* Prevent tiling */
+  padding: 70px;
+  background: white;
+  background-image:"D:\OneDrive\Documents\GitHub\ZeroCodeML\public\img\bg1.png";
   min-height: 100vh;
-  color: #ffffff;
+  color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Start from the top */
 }
 
-/* Wrapper for the entire page */
-body {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  min-height: 100vh;
-}
-
-/* Main content area */
-main {
-  flex: 1; /* Pushes the footer to the bottom */
-}
-
+/* Title */
 .headline {
   font-size: 2.5rem;
-  margin-bottom: 10px;
-  color: #0714a5;
+  margin-bottom: 20px;
 }
 
-.subheadline {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-  color: #0b1a23;
-}
-
-/* Toggle buttons with neon glow */
-.button-group {
+/* Category Boxes */
+.categories {
   display: flex;
   gap: 20px;
-  margin-bottom: 30px;
-}
-
-.toggle-button {
-  padding: 15px 30px;
-  background-color: transparent; /* Transparent for ghost-style look */
-  border: 2px solid;
-  border-image-source: linear-gradient(90deg, #f3f4f4, #142ca5); /* Blue to yellow gradient */
-  border-image-slice: 1;
-  border-radius: 0;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #000000; /* Default text color (blue) */
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.6), 0 0 10px rgba(255, 255, 255, 0.6); /* Neon blue and yellow glow */
-}
-
-.toggle-button:hover {
-  background-color: linear-gradient(90deg, #00d4ff, #bcbbba); /* Gradient background on hover */
-  color: #0f172a; /* Darker text for contrast */
-  box-shadow: 0 0 20px rgba(0, 212, 255, 1), 0 0 20px #08088b; /* Intense neon glow */
-  transform: scale(1.05); /* Slight scale effect on hover */
-}
-
-.toggle-button:active {
-  transform: scale(0.95); /* Slight shrink effect on click */
-}
-
-.toggle-button.active {
-  background: linear-gradient(90deg, #00d4ff, #08088b); /* Gradient fill for active state */
-  color: #f8f0f0; /* Darker text for contrast */
-  box-shadow: 0 0 25px rgba(0, 212, 255, 1), 0 0 25px #08088b; /* Brighter glow for active state */
-}
-
-
-.algorithm-list {
-  margin: 20px 0;
-  text-align: center;
-  width: 30%;
-  background: linear-gradient(135deg, #1d3557, #457b9d); /* Blue gradient */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.3);
-}
-
-
-.algorithm-category h3 {
-  margin-bottom: 10px;
-  color: #20e3ed;
-}
-
-.algorithm-category ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-.algorithm-category li {
-  padding: 10px;
-  background: none;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  color: #ffffff;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.algorithm-category li:hover {
-  background: #ffffff;
-  color: #000000;
-}
-
-.algorithm-category li.selected {
-  background: #20e3ed;
-  color: #000000;
-  font-weight: bold;
-}
-
-.algorithm-category li[title]:hover::after {
-  content: attr(title);
-  position: absolute;
-  background: #000000;
-  color: #ffffff;
-  padding: 5px;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  bottom: 120%;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-}
-
-/* Swipe Button Container */
-.swipe-button-container {
-  margin-top: 30px;
-  display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
-/* Swipe Button Styles */
-.swipe-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
+.category-box {
+  background: linear-gradient(to bottom, #00d4ff, #008cba);
+  padding: 20px;
+  border-radius: 10px;
+  width: 250px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+.category-box h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* Model Buttons */
+.model-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.model-button {
+  background: #ffffff;
+  color: #000;
+  border: none;
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.model-button:hover {
+  background: #00d4ff;
+  color: white;
+  transform: scale(1.05);
+}
+
+.model-button.selected {
+  background: #ffcc00;
+  color: black;
+}
+
+/* Submit Button */
+.submit-button {
+  margin-top: 20px;
+  background: #00d4ff;
+  color: white;
   padding: 12px 30px;
   font-size: 1.2rem;
   font-weight: bold;
-  color: #ffffff;
-  background-color: #1f2937; /* Dark background */
   border: none;
-  border-radius: 50px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease, transform 0.2s;
 }
 
-.swipe-button:hover {
-  background-color: #000000;
-  transform: translateY(-3px);
+.submit-button:hover {
+  background: #008cba;
+  transform: scale(1.1);
 }
-
-.swipe-button:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* Arrow Styles */
-.arrow-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-}
-
-.arrow {
-  width: 20px;
-  height: 20px;
-  border: solid #ffffff;
-  border-width: 2px 2px 0 0;
-  transform: rotate(45deg);
-  animation: arrow-move 1.2s infinite;
-}
-
-@keyframes arrow-move {
-  0% {
-    transform: translateX(0) rotate(45deg);
-  }
-  50% {
-    transform: translateX(5px) rotate(45deg);
-  }
-  100% {
-    transform: translateX(0) rotate(45deg);
-  }
-}
-
-/* Home icon styles */
-.home-icon {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #1f2937; /* Dark background for the icon */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.home-icon:hover {
-  transform: scale(1.1); /* Slight scale-up on hover */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-}
-
-.home-icon svg {
-  width: 24px;
-  height: 24px;
-  fill: #00d4ff; /* Neon blue fill for the icon */
-  transition: fill 0.3s;
-}
-
-.home-icon:hover svg {
-  fill: #e0e3e3; /* Change fill color to yellow on hover */
-}
-
-
-
