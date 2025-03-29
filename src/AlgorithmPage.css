@@ -71,6 +71,12 @@
   font-weight: bold;
   color: white;
 }
+.selected-model {
+  border: 3px solid #ff5733; /* Highlight border */
+  transform: scale(1.5); /* Slightly enlarge */
+  transition: all 0.3s ease;
+}
+
 
 /* Back Side */
 .algo-flip-card-back {

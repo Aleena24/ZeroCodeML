@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion"; // Make sure framer-motion is installed
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import "./AlgorithmPage.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useNavigate } from "react-router-dom";
 
 const AlgorithmPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
-
+  const [selectedModel, setSelectedModel] = useState(null); // State for selected model
   const navigate = useNavigate();
 
   const supervisedAlgorithms = {
@@ -17,8 +17,8 @@ const AlgorithmPage = () => {
         "Linear Regression": "Predicts a continuous output based on a linear function of input features.",
         "Polynomial Regression": "Extends linear regression by considering polynomial relationships.",
         "Ridge Regression": "Uses L2 regularization to prevent overfitting in linear regression.",
-        "Lasso Regression": "Uses L1 regularization to enforce sparsity in the regression model."
-      }
+        "Lasso Regression": "Uses L1 regularization to enforce sparsity in the regression model.",
+      },
     },
     Classification: {
       description: "Classification models categorize data into predefined classes.",
@@ -29,8 +29,8 @@ const AlgorithmPage = () => {
         "Random Forest": "Combines multiple decision trees to improve accuracy.",
         "Gradient Boosting": "Sequentially improves weak models to create a strong classifier.",
         "K-Nearest Neighbors (KNN)": "Classifies data based on the closest training examples.",
-        "Naive Bayes": "Uses probability and Bayes’ theorem for classification."
-      }
+        "Naive Bayes": "Uses probability and Bayes’ theorem for classification.",
+      },
     },
     Clustering: {
       description: "Clustering models group similar data points together.",
@@ -38,17 +38,31 @@ const AlgorithmPage = () => {
         "K-Means Clustering": "Groups data points into k clusters based on similarity.",
         "K-Medoids Clustering": "Similar to k-means but uses actual data points as cluster centers.",
         "Hierarchical Clustering": "Builds a hierarchy of clusters using a tree structure.",
-        "Fuzzy C-Means": "Assigns data points to clusters with degrees of belonging."
-      }
-    }
+        "Fuzzy C-Means": "Assigns data points to clusters with degrees of belonging.",
+      },
+    },
   };
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
+    setSelectedModel(null); // Reset model selection when category changes
   };
 
   const handleBackToCategories = () => {
     setSelectedCategory(null);
+    setSelectedModel(null);
+  };
+
+  const handleModelSelect = (model) => {
+    setSelectedModel(model);
+  };
+
+  const handleSubmit = () => {
+    if (!selectedModel) {
+      alert("Please select a model before submitting.");
+      return;
+    }
+    navigate("/result", { state: { selectedModel } }); // Pass selected model to result page
   };
 
   return (
@@ -79,8 +93,9 @@ const AlgorithmPage = () => {
             {Object.entries(supervisedAlgorithms[selectedCategory].models).map(([model, description]) => (
               <motion.div
                 key={model}
-                className="algo-flip-card"
+                className={`algo-flip-card ${selectedModel === model ? "selected-model" : ""}`}
                 whileHover={{ rotateY: 180 }}
+                onClick={() => handleModelSelect(model)}
               >
                 <div className="algo-flip-card-inner">
                   <div className="algo-flip-card-front">{model}</div>
@@ -94,11 +109,10 @@ const AlgorithmPage = () => {
             <button className="algo-back-button" onClick={handleBackToCategories}>
               Cancel
             </button>
-            <button className="algo-submit-button" onClick={() => navigate("/results")}>
+            <button className="algo-submit-button" onClick={handleSubmit}>
               Submit
             </button>
           </div>
-
         </div>
       )}
       <Footer />
