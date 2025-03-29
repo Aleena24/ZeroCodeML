@@ -25,7 +25,7 @@ const Navbar = () => {
 
         {/* Right Side: Get Started Button */}
         <div className="navbar-button-container">
-          <Link to="/get-started" className="get-started-button">Get Started</Link>
+          <Link to="/main" className="get-started-button">Get Started</Link>
         </div>
       </div>
     </nav>

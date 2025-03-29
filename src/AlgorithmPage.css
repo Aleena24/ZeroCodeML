@@ -1,91 +1,177 @@
-/* General page styles */
-.algorithm-page {
+/* General Page Styles */
+.algo-page {
   text-align: center;
-  padding: 70px;
+  padding: 100px;
   background: white;
-  background-image:"D:\OneDrive\Documents\GitHub\ZeroCodeML\public\img\bg1.png";
   min-height: 100vh;
-  color: white;
+  background: url("D:\OneDrive\Documents\GitHub\ZeroCodeML\public\img\bg1.png") no-repeat center center fixed;
+  height: 100vh;
+  background-size: cover;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 /* Title */
-.headline {
+.algo-headline {
   font-size: 2.5rem;
   margin-bottom: 20px;
 }
 
-/* Category Boxes */
-.categories {
+/* Category Container */
+.algo-categories {
   display: flex;
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.category-box {
-  background: linear-gradient(to bottom, #00d4ff, #008cba);
-  padding: 20px;
-  border-radius: 10px;
+/* Flip Card Container */
+.algo-flip-card {
+  background: transparent;
   width: 250px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  height: 150px;
+  perspective: 1000px;
+  cursor: pointer;
 }
 
-.category-box h2 {
-  margin-bottom: 10px;
+/* Flip Card Inner */
+.algo-flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+/* Flip Card Hover Effect */
+.algo-flip-card:hover .algo-flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Flip Card Front & Back */
+.algo-flip-card-front,
+.algo-flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Front Side */
+.algo-flip-card-front {
+  background: linear-gradient(to bottom, #00d4ff, #008cba);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #ffffff;
+  color: white;
 }
 
-/* Model Buttons */
-.model-buttons {
+/* Back Side */
+.algo-flip-card-back {
+  background: white;
+  color: black;
+  transform: rotateY(180deg);
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  padding: 10px;
+  text-align: center;
 }
 
-.model-button {
-  background: #ffffff;
-  color: #000;
-  border: none;
-  padding: 10px;
+/* Expanded Category Section */
+.algo-models-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Model Container */
+.algo-model-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Model Flip Cards */
+.algo-model-card {
+  background: transparent;
+  width: 200px;
+  height: 120px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+/* Model Card Inner */
+.algo-model-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+/* Flip Effect */
+.algo-model-card:hover .algo-model-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Model Front & Back */
+.algo-model-card-front,
+.algo-model-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  backface-visibility: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Model Front */
+.algo-model-card-front {
+  background: #008cba;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1rem;
   font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s;
-}
-
-.model-button:hover {
-  background: #00d4ff;
   color: white;
-  transform: scale(1.05);
 }
 
-.model-button.selected {
-  background: #ffcc00;
+/* Model Back */
+.algo-model-card-back {
+  background: white;
   color: black;
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  padding: 10px;
+  text-align: center;
 }
 
-/* Submit Button */
-.submit-button {
+/* Back Button */
+.algo-back-button {
   margin-top: 20px;
-  background: #00d4ff;
+  background: #ff5733;
   color: white;
-  padding: 12px 30px;
-  font-size: 1.2rem;
+  padding: 10px 20px;
+  font-size: 1rem;
   font-weight: bold;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s;
 }
 
-.submit-button:hover {
-  background: #008cba;
+.algo-back-button:hover {
+  background: #c70039;
   transform: scale(1.1);
 }
