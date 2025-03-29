@@ -100,7 +100,6 @@ const MainPage = () => {
           )}
         </div>
       </main>
-
       <Footer />
     </div>
   );

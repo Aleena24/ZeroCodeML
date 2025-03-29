@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./EDASummary.css";
+import Footer from "./Footer";
+import Navbar from "./Navbar";
 
 const EdaSummary = () => {
   const [edaSummary, setEdaSummary] = useState(null);
@@ -47,7 +49,8 @@ const EdaSummary = () => {
 
   return (
     <div className="eda-container">
-      <h1>Exploratory Data Analysis (EDA) Report</h1>
+      <Navbar />
+      <h1>Dataset Overview</h1>
       {errorMessage && <p className="error-text">{errorMessage}</p>}
       
       {!selectedOption ? (
@@ -119,6 +122,7 @@ const EdaSummary = () => {
           )}
         </div>
       )}
+       <Footer />
     </div>
   );
 };
