@@ -15,3 +15,4 @@ matplotlib==3.7.1
 Seaborn==0.12.2
 react-icons
 framer-motion
+catboost

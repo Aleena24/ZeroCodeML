@@ -209,3 +209,19 @@
   background: #0d844d;
   transform: scale(1.1);
 }
+
+/* Target Column Dropdown */
+.algo-input select {
+  width: 250px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.algo-input select:focus {
+  border-color: #007bff;
+}

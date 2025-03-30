@@ -1,32 +1,32 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './ResultPage.css';
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import "./ResultPage.css";
 
 const ResultPage = () => {
   const [showVisualization, setShowVisualization] = useState(false);
   const [showChatGPTModal, setShowChatGPTModal] = useState(false);
-
-  // Initialize navigate using the useNavigate hook
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const results = state?.results || {};
 
   const handleVisualizationClick = () => {
     setShowVisualization(!showVisualization);
   };
 
   const handleChatGPTClick = () => {
-    setShowChatGPTModal(true); // Show ChatGPT modal
+    setShowChatGPTModal(true);
   };
 
   const handleCloseModal = () => {
-    setShowChatGPTModal(false); // Close ChatGPT modal
+    setShowChatGPTModal(false);
   };
 
   const handleNextClick = () => {
-    window.location.href = '/main'; // Redirect to the main page (change '/main' to the actual path of your main page)
+    navigate("/main");
   };
 
   const handleHomeClick = () => {
-    navigate("/"); // Navigate to the homepage
+    navigate("/");
   };
 
   return (
@@ -35,61 +35,39 @@ const ResultPage = () => {
       <p className="subheadline">Here are the insights from your analysis:</p>
 
       <div className="results-container">
-        <div className="result-item">
-          <h2>Accuracy</h2>
-          <p>95%</p>
-        </div>
-        <div className="result-item">
-          <h2>Precision</h2>
-          <p>92%</p>
-        </div>
-        <div className="result-item">
-          <h2>Recall</h2>
-          <p>90%</p>
-        </div>
-        <div className="result-item">
-          <h2>Algorithm</h2>
-          <p>Algorithm 1</p>
-        </div>
+        <div className="result-item"><h2>Model:</h2><p>{results.model_name}</p></div>
+        <div className="result-item"><h2>Accuracy:</h2><p>{results.accuracy}</p></div>
+        <div className="result-item"><h2>Precision:</h2><p>{results.precision}</p></div>
+        <div className="result-item"><h2>Recall:</h2><p>{results.recall}</p></div>
+        <div className="result-item"><h2>F1 Score:</h2><p>{results.f1_score}</p></div>
       </div>
 
       <button className="visualization-button" onClick={handleVisualizationClick}>
-        {showVisualization ? 'Hide Visualization' : 'Show Visualization'}
+        {showVisualization ? "Hide Visualization" : "Show Visualization"}
       </button>
 
       {showVisualization && (
         <div className="visualization-content">
-          <h2>Data Visualization (Placeholder)</h2>
-          <div className="chart-placeholder">
-            <p>Chart will be rendered here...</p>
-          </div>
+          <h2>Visualizations</h2>
+          <img src={`data:image/png;base64,${results.confusion_matrix}`} alt="Confusion Matrix" />
+          <img src={`data:image/png;base64,${results.roc_curve}`} alt="ROC Curve" />
+          <img src={`data:image/png;base64,${results.precision_recall_curve}`} alt="Precision-Recall Curve" />
+          <img src={`data:image/png;base64,${results.feature_importance}`} alt="Feature Importance" />
         </div>
       )}
 
-      {/* ChatGPT Logo Button */}
-      <img
-        src="./img/gem.png" // Update this path to the actual ChatGPT logo image file
-        alt="ChatGPT Logo"
-        className="chatgpt-logo-button"
-        onClick={handleChatGPTClick} // Open the modal on click
-      />
-
-      {/* Modal for ChatGPT Button */}
+      <img src="./img/gem.png" alt="ChatGPT Logo" className="chatgpt-logo-button" onClick={handleChatGPTClick} />
       {showChatGPTModal && (
         <div className="chatgpt-modal">
           <h2>ChatGPT Results</h2>
-          <p>Here are the detailed results from the algorithm evaluation process:</p>
-          <p><strong>Accuracy:</strong> 95%</p>
-          <p><strong>Precision:</strong> 92%</p>
-          <p><strong>Recall:</strong> 90%</p>
-          <p><strong>Algorithm Used:</strong> Algorithm 1</p>
-          <button className="modal-close-btn" onClick={handleCloseModal}>
-            Close
-          </button>
+          <p><strong>Accuracy:</strong> {results.accuracy}</p>
+          <p><strong>Precision:</strong> {results.precision}</p>
+          <p><strong>Recall:</strong> {results.recall}</p>
+          <p><strong>F1 Score:</strong> {results.f1_score}</p>
+          <button className="modal-close-btn" onClick={handleCloseModal}>Close</button>
         </div>
       )}
 
-      {/* Updated Swipe Button */}
       <div className="swipe-button-container" onClick={handleNextClick}>
         <button className="swipe-button">
           <span>Resume</span>
@@ -99,13 +77,8 @@ const ResultPage = () => {
         </button>
       </div>
 
-      {/* Home Icon */}
       <div className="home-icon" onClick={handleHomeClick}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 3l9 8h-3v10h-12v-10h-3z" />
         </svg>
       </div>

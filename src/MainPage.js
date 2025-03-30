@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
-import "./MainPage.css"; // Ensure the background is handled in CSS
+import "./MainPage.css";
 
 const MainPage = () => {
   const [view, setView] = useState("main");
   const [fileName, setFileName] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate(); // Removed unused 'file' state
+  const navigate = useNavigate();
 
   const handleFileUpload = (event) => {
     const uploadedFile = event.target.files[0];
-    if (uploadedFile) {
-      const fileType = uploadedFile.name.split(".").pop().toLowerCase();
-      const allowedTypes = ["csv", "xlsx", "xls"];
+    if (!uploadedFile) return;
 
-      if (allowedTypes.includes(fileType)) {
-        setFileName(uploadedFile.name);
-        setView("fileUploading");
+    const fileType = uploadedFile.name.split(".").pop().toLowerCase();
+    const allowedTypes = ["csv", "xlsx", "xls"];
 
-        localStorage.setItem("uploadedFile", uploadedFile.name); // Fixed: Store only file name
-        uploadFileToBackend(uploadedFile);
-      } else {
-        setErrorMessage("Please upload a valid file type: .csv, .xlsx, or .xls");
-      }
+    if (!allowedTypes.includes(fileType)) {
+      setErrorMessage("Please upload a valid file type: .csv, .xlsx, or .xls");
+      return;
     }
+
+    setFileName(uploadedFile.name);
+    setView("fileUploading");
+    localStorage.setItem("uploadedFile", uploadedFile.name);
+    uploadFileToBackend(uploadedFile);
   };
 
   const uploadFileToBackend = async (uploadedFile) => {
@@ -35,7 +35,8 @@ const MainPage = () => {
     formData.append("file", uploadedFile);
 
     try {
-      const response = await axios.post("http://localhost:5000/upload", formData, {
+      // ✅ Updated the backend API URL to use port 8000
+      const response = await axios.post("http://127.0.0.1:8000/upload-dataset", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress: (progressEvent) => {
           const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -45,6 +46,7 @@ const MainPage = () => {
 
       if (response.status === 200) {
         setView("fileUploaded");
+        localStorage.setItem("datasetColumns", JSON.stringify(response.data.columns));
       } else {
         throw new Error("File upload failed");
       }
@@ -67,12 +69,7 @@ const MainPage = () => {
               <div className="zerocodeml-upload-section">
                 <label className="zerocodeml-upload-button">
                   Select File (.csv, .xlsx, .xls)
-                  <input
-                    type="file"
-                    accept=".csv, .xlsx, .xls"
-                    style={{ display: "none" }}
-                    onChange={handleFileUpload}
-                  />
+                  <input type="file" accept=".csv, .xlsx, .xls" style={{ display: "none" }} onChange={handleFileUpload} />
                 </label>
               </div>
 

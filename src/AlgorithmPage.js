@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import "./AlgorithmPage.css";
@@ -7,8 +7,25 @@ import Footer from "./Footer";
 
 const AlgorithmPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedModel, setSelectedModel] = useState(null); // State for selected model
+  const [selectedModel, setSelectedModel] = useState(null);
+  const [selectedTargetColumn, setSelectedTargetColumn] = useState("");
+  const [columns, setColumns] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchColumns = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/get_columns");
+        const data = await response.json();
+        console.log("Fetched Columns:", data);
+        setColumns(data.columns || []);
+      } catch (error) {
+        console.error("Failed to fetch columns:", error);
+        setColumns([]);
+      }
+    };
+    fetchColumns();
+  }, []);
 
   const supervisedAlgorithms = {
     Regression: {
@@ -45,24 +62,56 @@ const AlgorithmPage = () => {
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
-    setSelectedModel(null); // Reset model selection when category changes
-  };
-
-  const handleBackToCategories = () => {
-    setSelectedCategory(null);
     setSelectedModel(null);
   };
 
-  const handleModelSelect = (model) => {
-    setSelectedModel(model);
+  const modelKeys = {
+    "Logistic Regression": "logistic_regression",
+    "Support Vector Machines (SVM)": "linear_svc",
+    "K-Nearest Neighbors": "knn",
+    "Naive Bayes": "naive_bayes",
+    "Decision Tree": "decision_tree",
+    "Random Forest": "random_forest",
+    "Gradient Boosting": "gradient_boosting",
+    "XGBoost": "xgboost"
   };
+  
+  const handleModelSelect = (model) => {
+    const mappedModel = modelKeys[model];
+  
+    console.log("Frontend Model Selected:", model);
+    console.log("Mapped Model for Backend:", mappedModel);  // Debugging output
+  
+    if (mappedModel) {
+      setSelectedModel(mappedModel);  // Correctly set state
+    } else {
+      console.error("Invalid Model Selection:", model);
+    }
+  };
+  
 
-  const handleSubmit = () => {
-    if (!selectedModel) {
-      alert("Please select a model before submitting.");
+  const handleTrainModel = async () => {
+    if (!selectedModel || !selectedTargetColumn) {
+      alert("Please select a model and target column before training.");
       return;
     }
-    navigate("/result", { state: { selectedModel } }); // Pass selected model to result page
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/train_classification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ model_name: selectedModel, target_column: selectedTargetColumn }),
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        alert("Error: " + data.error);
+      } else {
+        navigate("/result", { state: { results: data } });
+      }
+    } catch (error) {
+      alert("Failed to train model. Please try again.");
+    }
   };
 
   return (
@@ -90,29 +139,38 @@ const AlgorithmPage = () => {
         <div className="algo-models-section">
           <h2>{selectedCategory}</h2>
           <div className="algo-model-buttons">
-            {Object.entries(supervisedAlgorithms[selectedCategory].models).map(([model, description]) => (
+          {Object.entries(supervisedAlgorithms[selectedCategory]?.models || {}).map(([modelName, description]) => (
               <motion.div
-                key={model}
-                className={`algo-flip-card ${selectedModel === model ? "selected-model" : ""}`}
+                key={modelName}
+                className={`algo-flip-card ${selectedModel === modelKeys[modelName] ? "selected-model" : ""}`} 
                 whileHover={{ rotateY: 180 }}
-                onClick={() => handleModelSelect(model)}
+                onClick={() => handleModelSelect(modelName)}  
               >
                 <div className="algo-flip-card-inner">
-                  <div className="algo-flip-card-front">{model}</div>
+                  <div className="algo-flip-card-front">{modelName}</div>
                   <div className="algo-flip-card-back">{description}</div>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          <div className="algo-buttons">
-            <button className="algo-back-button" onClick={handleBackToCategories}>
-              Cancel
-            </button>
-            <button className="algo-submit-button" onClick={handleSubmit}>
-              Submit
-            </button>
+          {/* Target Column Selection */}
+          <div className="algo-input">
+            <select value={selectedTargetColumn} onChange={(e) => setSelectedTargetColumn(e.target.value)}>
+              <option value="">Select Target Column</option>
+              {columns.length > 0 ? (
+                columns.map((col) => (
+                  <option key={col} value={col}>
+                    {col}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No columns available</option>
+              )}
+            </select>
           </div>
+
+          <button className="algo-submit-button" onClick={handleTrainModel}>Train Model</button>
         </div>
       )}
       <Footer />

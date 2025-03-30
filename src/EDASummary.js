@@ -17,7 +17,7 @@ const EdaSummary = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const edaResponse = await axios.get("http://localhost:5000/eda-summary");
+        const edaResponse = await axios.get("http://127.0.0.1:8000/eda-summary");
         setEdaSummary(edaResponse.data.summary || null);
       } catch (error) {
         console.error("Error fetching EDA Summary:", error);

@@ -1,152 +1,171 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pandas as pd
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import base64
-import os
 from io import BytesIO
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 from werkzeug.utils import secure_filename
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OrdinalEncoder, StandardScaler, LabelEncoder
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import LinearSVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+import xgboost as xgb
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, roc_curve, auc, precision_recall_curve
 
-
-# Flask app initialization
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"]}})
 
-eda_data = pd.DataFrame()
-
+# File upload settings
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {'csv', 'xlsx'}
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+uploaded_data = pd.DataFrame()
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def plot_to_base64(fig):
-    buffer = BytesIO()
-    fig.savefig(buffer, format='png')
-    buffer.seek(0)
-    image_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
-    plt.close(fig)
-    return image_base64
+def preprocess_data(df, threshold=40):
+    """Preprocess the dataset: handle missing values, encode categories, and scale features."""
+    dropped_columns = df.columns[df.isnull().mean() * 100 >= threshold].tolist()
+    df = df.drop(columns=dropped_columns)
 
-def dfSummary(data):
-    summary = pd.DataFrame({
-        'Column': data.columns,
-        'Dtype': data.dtypes.astype(str),
-        'Non-null': data.notnull().sum(),
-        'Missing': data.isnull().sum(),
-        'Missing (%)': (data.isnull().sum() * 100 / len(data)).round(2),
-        'Uniques': data.nunique()
-    })
-    return summary.to_dict(orient='records')
+    int_columns = df.select_dtypes(include=np.number).columns
+    obj_columns = df.select_dtypes(exclude=np.number).columns
 
-@app.route('/upload', methods=['POST'])
+    # Handle missing values
+    df[int_columns] = df[int_columns].apply(lambda x: x.fillna(x.mean()))
+    df[obj_columns] = df[obj_columns].apply(lambda x: x.fillna(x.mode()[0]))
+
+    # Encode categorical features
+    encoder = OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)
+    df[obj_columns] = encoder.fit_transform(df[obj_columns])
+
+    # Scale numerical features
+    scaler = StandardScaler()
+    df[int_columns] = scaler.fit_transform(df[int_columns])
+
+    return df, encoder, scaler, dropped_columns
+
+classification_models = {
+    "logistic_regression": LogisticRegression(random_state=77, max_iter=10000),
+    "linear_svc": LinearSVC(random_state=77, dual=False),
+    "knn": KNeighborsClassifier(),
+    "naive_bayes": MultinomialNB(),
+    "decision_tree": DecisionTreeClassifier(random_state=77),
+    "random_forest": RandomForestClassifier(random_state=77),
+    "gradient_boosting": GradientBoostingClassifier(random_state=77),
+    "xgboost": xgb.XGBClassifier(random_state=77)
+}
+
+
+@app.route('/upload-dataset', methods=['POST'])
 def upload_file():
-    global eda_data  # Make it accessible throughout the app
+    global uploaded_data
     file = request.files.get("file")
-
-    if not file:
-        return jsonify({"error": "No file provided"}), 400  # Bad Request
-
-    try:
-        # Read the CSV file
-        eda_data = pd.read_csv(file)
-
-        return jsonify({"message": "File uploaded successfully", "columns": list(eda_data.columns)})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500  # Internal Server Error
+    if not file or not allowed_file(file.filename):
+        return jsonify({"error": "Invalid file format"}), 400
     
+    try:
+        file_path = os.path.join(UPLOAD_FOLDER, "uploaded_file.csv")
+        file.save(file_path)
+        uploaded_data = pd.read_csv(file_path)
+        return jsonify({"message": "File uploaded successfully", "columns": list(uploaded_data.columns)})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
+@app.route("/get_columns", methods=["GET"])
+def get_columns():
+    """Fetch column names from the uploaded dataset."""
+    global uploaded_data
+    if uploaded_data.empty:
+        return jsonify({"error": "No dataset uploaded"}), 400
+
+    return jsonify({"columns": list(uploaded_data.columns)})
 
 @app.route("/eda-summary", methods=["GET"])
 def eda_summary():
-    global eda_data  
-
-    if eda_data is None or eda_data.empty:
-        return jsonify({"error": "No dataset uploaded or dataset is empty"}), 400
+    """Provide a summary of the uploaded dataset."""
+    global uploaded_data
+    if uploaded_data.empty:
+        return jsonify({"error": "No dataset uploaded"}), 400
 
     summary = {
         col: {
-            "dtype": str(eda_data[col].dtype),
-            "missing": int(eda_data[col].isnull().sum()),
-            "non_null": int(eda_data[col].count()),
-            "unique": int(eda_data[col].nunique()),
-            "data_type": str(eda_data[col].dtype),
+            "dtype": str(uploaded_data[col].dtype),
+            "missing": int(uploaded_data[col].isnull().sum()),
+            "non_null": int(uploaded_data[col].count()),
+            "unique": int(uploaded_data[col].nunique()),
         }
-        for col in eda_data.columns
+        for col in uploaded_data.columns
     }
     return jsonify({"summary": summary})
 
-
-@app.route('/descriptive-stats', methods=['GET'])
-def get_descriptive_stats():
-    global eda_data  
-
-    if eda_data is None or eda_data.empty:
-        return jsonify({'error': 'No dataset uploaded or dataset is empty'}), 400
-
-    # Ensure numerical columns exist
-    num_cols = eda_data.select_dtypes(include=[np.number]).columns.tolist()
-    if not num_cols:
-        return jsonify({'error': 'No numerical columns found in dataset'}), 400
-
-    stats = eda_data[num_cols].describe().to_dict()
-    return jsonify({'descriptive_stats': stats})
-
-
-
-@app.route('/correlation-heatmap', methods=['GET'])
-def get_correlation_heatmap():
-    global eda_data  
-
-    if eda_data is None or eda_data.empty:
-        return jsonify({'error': 'No dataset uploaded'}), 400
-
+@app.route('/train_classification', methods=['POST'])
+def train_classification():
     try:
-        numeric_data = eda_data.select_dtypes(include=[np.number])
-        if numeric_data.shape[1] < 2:
-            return jsonify({'error': 'Not enough numerical columns for correlation heatmap'}), 400
-
-        corr = numeric_data.corr()  
-        fig, ax = plt.subplots(figsize=(10, 8))
-        sns.heatmap(corr, annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
-
-        return jsonify({'correlation_plot': plot_to_base64(fig)})  # Updated key name
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-
-
-@app.route('/numerical-distribution', methods=['GET'])
-def get_numerical_distribution():
-    global eda_data  
-
-    if eda_data is None or eda_data.empty:
-        return jsonify({'error': 'No dataset uploaded'}), 400
-
-    try:
-        num_cols = eda_data.select_dtypes(include=[np.number]).columns.tolist()
-        if not num_cols:
-            return jsonify({'error': 'No numerical columns available'}), 400
+        global uploaded_data
+        if uploaded_data.empty:
+            return jsonify({"error": "No dataset uploaded"}), 400
         
-        fig, axes = plt.subplots(nrows=len(num_cols), figsize=(10, 6 * len(num_cols)))
-        
-        if len(num_cols) == 1:
-            eda_data[num_cols[0]].hist(ax=axes, bins=20, edgecolor='black', grid=False)
-            axes.set_title(num_cols[0])
-        else:
-            for i, col in enumerate(num_cols):
-                eda_data[col].hist(ax=axes[i], bins=20, edgecolor='black', grid=False)
-                axes[i].set_title(col)
+        data = request.get_json()
+        target_column = data.get("target_column")
+        model_name = data.get("model_name")
 
-        return jsonify({'numerical_distribution': plot_to_base64(fig)})  # Updated key name
-    
+        if not target_column or not model_name:
+            return jsonify({"error": "Missing target column or model name"}), 400
+
+        print("Received model name:", model_name)  # Debugging
+        print("Available models:", list(classification_models.keys()))  # Debugging
+
+        # Validate model selection
+        if model_name not in classification_models:
+            return jsonify({
+                "error": "Invalid model selection",
+                "valid_models": list(classification_models.keys())
+            }), 400
+
+        # Preprocess Data
+        df, encoder, scaler, dropped_columns = preprocess_data(uploaded_data, 40)
+
+        if target_column not in df.columns:
+            return jsonify({"error": f"Target column '{target_column}' not found"}), 400
+
+        # Splitting Data
+        X_train, X_test, y_train, y_test = train_test_split(
+            df.drop(columns=[target_column]), df[target_column], test_size=0.3, random_state=7
+        )
+
+        # Encode target column if categorical
+        if y_train.dtype == "O":
+            label_encoder = LabelEncoder()
+            y_train = label_encoder.fit_transform(y_train)
+            y_test = label_encoder.transform(y_test)
+
+        # Load and train model
+        model = classification_models[model_name]
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+
+        # Compute Metrics
+        metrics = {
+            "accuracy": accuracy_score(y_test, y_pred),
+            "precision": precision_score(y_test, y_pred, average="macro"),
+            "recall": recall_score(y_test, y_pred, average="macro"),
+            "f1_score": f1_score(y_test, y_pred, average="macro"),
+        }
+
+        return jsonify({"model_name": model_name, "metrics": metrics})
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=8000, debug=True, threaded=True)
