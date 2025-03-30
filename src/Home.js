@@ -2,10 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 import './AboutUs';
+import Navbar from './Navbar';
+import Footer from './Footer';
 
 const HomePage = () => {
   return (
     <div className="homepage">
+      < Navbar />
       {/* About Us Button Icon */}
       <div className="top-right-link">
         <Link to="/about" className="about-us-link">
@@ -138,6 +141,7 @@ const HomePage = () => {
       <Link to="/main" className="floating-button">
         Take Me Now
       </Link>
+      <Footer />
     </div>
   );
 };
