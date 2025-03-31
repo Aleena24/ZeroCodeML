@@ -21,6 +21,10 @@ const ResultPage = () => {
 
   const results = responseData || state?.results || {};
 
+  const formatPercentage = (value) => {
+    return value !== undefined ? `${(value * 100).toFixed(2)}%` : "N/A";
+  };
+
   const handleVisualizationClick = () => {
     setShowVisualization(!showVisualization);
   };
@@ -48,10 +52,10 @@ const ResultPage = () => {
 
       <div className="results-container">
         <div className="result-item"><h2>Model:</h2><p>{results.model_name}</p></div>
-        <div className="result-item"><h2>Accuracy:</h2><p>{results.accuracy}</p></div>
-        <div className="result-item"><h2>Precision:</h2><p>{results.precision}</p></div>
-        <div className="result-item"><h2>Recall:</h2><p>{results.recall}</p></div>
-        <div className="result-item"><h2>F1 Score:</h2><p>{results.f1_score}</p></div>
+        <div className="result-item"><h2>Accuracy:</h2><p>{formatPercentage(results.accuracy)}</p></div>
+        <div className="result-item"><h2>Precision:</h2><p>{formatPercentage(results.precision)}</p></div>
+        <div className="result-item"><h2>Recall:</h2><p>{formatPercentage(results.recall)}</p></div>
+        <div className="result-item"><h2>F1 Score:</h2><p>{formatPercentage(results.f1_score)}</p></div>
       </div>
 
       <button className="visualization-button" onClick={handleVisualizationClick}>
@@ -72,10 +76,10 @@ const ResultPage = () => {
       {showChatGPTModal && (
         <div className="chatgpt-modal">
           <h2>ChatGPT Results</h2>
-          <p><strong>Accuracy:</strong> {results.accuracy}</p>
-          <p><strong>Precision:</strong> {results.precision}</p>
-          <p><strong>Recall:</strong> {results.recall}</p>
-          <p><strong>F1 Score:</strong> {results.f1_score}</p>
+          <p><strong>Accuracy:</strong> {formatPercentage(results.accuracy)}</p>
+          <p><strong>Precision:</strong> {formatPercentage(results.precision)}</p>
+          <p><strong>Recall:</strong> {formatPercentage(results.recall)}</p>
+          <p><strong>F1 Score:</strong> {formatPercentage(results.f1_score)}</p>
           <button className="modal-close-btn" onClick={handleCloseModal}>Close</button>
         </div>
       )}
