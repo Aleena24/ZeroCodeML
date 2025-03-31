@@ -65,13 +65,35 @@ const ResultPage = () => {
       {showVisualization && (
         <div className="visualization-content">
           <h2>Visualizations</h2>
-          {results.confusion_matrix && <img src={`data:image/png;base64,${results.confusion_matrix}`} alt="Confusion Matrix" />}
-          {results.roc_curve && <img src={`data:image/png;base64,${results.roc_curve}`} alt="ROC Curve" />}
-          {results.precision_recall_curve && <img src={`data:image/png;base64,${results.precision_recall_curve}`} alt="Precision-Recall Curve" />}
-          {results.feature_importance && <img src={`data:image/png;base64,${results.feature_importance}`} alt="Feature Importance" />}
+          {/* Confusion Matrix */}
+          {results.confusion_matrix ? (
+            <img src={`data:image/png;base64,${results.confusion_matrix}`} alt="Confusion Matrix" />
+          ) : (
+            <p className="attention-message">⚠️ Confusion Matrix Not Available</p>
+          )}
+
+          {/* ROC Curve */}
+          {results.roc_curve ? (
+            <img src={`data:image/png;base64,${results.roc_curve}`} alt="ROC Curve" />
+          ) : (
+            <p className="attention-message">⚠️ ROC Curve Not Available</p>
+          )}
+
+          {/* Precision-Recall Curve */}
+          {results.precision_recall_curve ? (
+            <img src={`data:image/png;base64,${results.precision_recall_curve}`} alt="Precision-Recall Curve" />
+          ) : (
+            <p className="attention-message">⚠️ Precision-Recall Curve Not Available</p>
+          )}
+
+          {/* Feature Importance */}
+          {results.feature_importance ? (
+            <img src={`data:image/png;base64,${results.feature_importance}`} alt="Feature Importance" />
+          ) : (
+            <p className="attention-message">⚠️ Feature Importance Not Available</p>
+          )}
         </div>
       )}
-
       <img src="./img/gem.png" alt="ChatGPT Logo" className="chatgpt-logo-button" onClick={handleChatGPTClick} />
       {showChatGPTModal && (
         <div className="chatgpt-modal">
