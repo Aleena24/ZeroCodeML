@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./ResultPage.css";
 
 const ResultPage = () => {
   const [showVisualization, setShowVisualization] = useState(false);
   const [showChatGPTModal, setShowChatGPTModal] = useState(false);
+  const [responseData, setResponseData] = useState(null);
   const navigate = useNavigate();
   const { state } = useLocation();
-  const results = state?.results || {};
+  
+  useEffect(() => {
+      fetch("http://localhost:8000/get_results")
+          .then(res => res.json())
+          .then(data => {
+              console.log("Received Data:", data);
+              setResponseData(data);
+          })
+          .catch(error => console.error("Error fetching results:", error));
+  }, []);
+
+  const results = responseData || state?.results || {};
 
   const handleVisualizationClick = () => {
     setShowVisualization(!showVisualization);
@@ -49,10 +61,10 @@ const ResultPage = () => {
       {showVisualization && (
         <div className="visualization-content">
           <h2>Visualizations</h2>
-          <img src={`data:image/png;base64,${results.confusion_matrix}`} alt="Confusion Matrix" />
-          <img src={`data:image/png;base64,${results.roc_curve}`} alt="ROC Curve" />
-          <img src={`data:image/png;base64,${results.precision_recall_curve}`} alt="Precision-Recall Curve" />
-          <img src={`data:image/png;base64,${results.feature_importance}`} alt="Feature Importance" />
+          {results.confusion_matrix && <img src={`data:image/png;base64,${results.confusion_matrix}`} alt="Confusion Matrix" />}
+          {results.roc_curve && <img src={`data:image/png;base64,${results.roc_curve}`} alt="ROC Curve" />}
+          {results.precision_recall_curve && <img src={`data:image/png;base64,${results.precision_recall_curve}`} alt="Precision-Recall Curve" />}
+          {results.feature_importance && <img src={`data:image/png;base64,${results.feature_importance}`} alt="Feature Importance" />}
         </div>
       )}
 
